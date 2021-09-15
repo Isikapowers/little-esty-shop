@@ -7,4 +7,11 @@ class Admin::InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
   end
 
+
+  private
+
+  # def invoice_params
+  #   params.require(:invoice).permit(:status)
+  # end
+
 end

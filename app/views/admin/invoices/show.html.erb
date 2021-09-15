@@ -1,7 +1,39 @@
-<h1>Invoice ID: <%= @invoice.id %>'s Info</h1>
+<h1>Invoice ID <%= @invoice.id %>'s Info</h1>
+<p>----------------------------------------------------</p>
 
-<h3><%= @invoice.status %></h3>
-<h3><%= @invoice.created_at %></h3>
-<h3><%= @invoice.updated_at %></h3><br>
-<h3><%= @invoice.customer.first_name %></h3>
-<h3><%= @invoice.customer.last_name %></h3>
+<h5>Status: <%= @invoice.status %></h5><br>
+<h5>Created at: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %></h5>
+<h5>Update at: <%= @invoice.updated_at.strftime("%A, %B %d, %Y") %></h5><br>
+<h5>Customer's First Name: <%= @invoice.customer.first_name %></h5>
+<h5>Customer'a Last Name: <%= @invoice.customer.last_name %></h5><br>
+
+<p>----------------------------------------------------</p>
+
+<h3>Items on this Invoice</h3>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Item ID</th>
+      <th scope="col">Item Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Sold Price</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invoice.invoice_items.each do |invoice_item| %>
+    <tr>
+      <th scope="row"><%= invoice_item.item.id %></th>
+      <td><%= invoice_item.item.name %></td>
+      <td><%= invoice_item.quantity %></td>
+      <td>$<%= invoice_item.unit_price/100 %></td>
+      <td><%= invoice_item.status %></td>
+    </tr>
+  </tbody>
+  <% end %>
+</table>
+
+<p>----------------------------------------------------</p>
+
+<h3>Total Revenue: $<%= @invoice.total_revenue %> </h3>
