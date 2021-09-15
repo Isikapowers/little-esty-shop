@@ -12,7 +12,7 @@ describe 'Admin Merchants Update' do
     click_link 'Update'
 
     expect(current_path).to eq("/admin/merchants/#{@merchant1.id}/edit")
-    save_and_open_page
+
     fill_in 'Name', with: "Jason Momoa"
     click_button 'Submit'
 

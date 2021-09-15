@@ -45,9 +45,7 @@ describe 'Admin Merchants Index' do
     expect(page).to have_content('Scarlett Johansson')
   end
 
-  it 'can enable or disable with botton click' do
-    visit admin_merchants_path
-
-    expect(page).to
-  end
+  # it 'can enable or disable with botton click' do
+  #   visit admin_merchants_path
+  # end
 end

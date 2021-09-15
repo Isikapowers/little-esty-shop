@@ -42,7 +42,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0.1'
   gem "simplecov"
   gem "faker"
-  gem "factory_bot"
+  gem "factory_bot_rails"
   gem 'capybara'
   gem 'shoulda-matchers'
   gem 'launchy'
