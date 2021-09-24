@@ -1,0 +1,13 @@
+<h3>New Discount Form</h3><br>
+
+<%= flash[:alert] %>
+
+<%= form_with model: [@merchant, @bulk_discount], local: true do |f|  %>
+  <%= f.label :name, "Discount Name: " %>
+  <%= f.text_field :name %><br><br>
+  <%= f.label :percentage, "Percentage: " %>
+  <%= f.text_field :percentage, :value => (number_to_percentage(f.object.percentage, precision: 0)) %><br><br>
+  <%= f.label :quantity, "Minimum Quantity: " %>
+  <%= f.text_field :quantity %><br><br>
+  <%= f.submit "Create Discount" %>
+<% end %>
