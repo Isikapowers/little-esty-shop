@@ -17,5 +17,6 @@ Rails.application.routes.draw do
     resources :item_status, only: [:update]
     resources :invoices, only: [:index, :show, :update]
     resources :invoice_item, only: [:update]
+    resources :bulk_discounts
   end
 end
