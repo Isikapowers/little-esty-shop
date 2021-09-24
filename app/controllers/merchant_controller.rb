@@ -1,0 +1,3 @@
+class Merchant < ApplicationController
+
+end  
