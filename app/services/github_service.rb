@@ -1,6 +1,5 @@
 class GithubService
 
-
   def get_data(url)
     response = Faraday.get("https://api.github.com/repos/isikapowers/little-esty-shop#{url}")
     JSON.parse(response.body, symbolize_names: true)
