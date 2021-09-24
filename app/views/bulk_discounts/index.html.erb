@@ -1,0 +1,20 @@
+<h1><%= @merchant.name %>'s Discounts</h1><br>
+
+<%= link_to "Create New Discount", new_merchant_bulk_discount_path(@merchant) %><br><br>
+
+<h3>Upcoming Holidays</h3><br>
+<%  NagerDateService.next_three_holidays.each do |holiday| %>
+  <ul>
+ <li><%= holiday.name %>, <%= holiday.date %></li>
+ </ul>
+<% end %><br>
+
+
+<h3>List of Discounts:</h3><br>
+  <% @bulk_discounts.each do |discount| %>
+  <div id="discount-<%= discount.id %>">
+    <p>Discount Name: <%= link_to discount.name, merchant_bulk_discount_path(@merchant, discount) %></p>
+    <p>Percentage: <%= discount.percentage %>%</p>
+    <p>Minimum Quantity: <%= discount.quantity %></p>
+  </div>
+  <% end %>
