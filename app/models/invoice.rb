@@ -1,10 +1,10 @@
 class Invoice < ApplicationRecord
+  validates :status, :customer_id, :created_at, :updated_at, presence: true
+
   belongs_to :customer
   has_many :transactions
   has_many :invoice_items
   has_many :items, through: :invoice_items
-
-  validates :status, :customer_id, :created_at, :updated_at, presence: true
 
   enum status: [:cancelled, "in progress", :completed]
 
@@ -19,5 +19,9 @@ class Invoice < ApplicationRecord
 
   def self.all_merch_invoices(merchant_id)
     Invoice.joins(:items).where('items.merchant_id = ?', merchant_id).uniq
+  end
+
+  def total_discounted_revenue
+    invoice_items.sum(&:revenue)
   end
 end

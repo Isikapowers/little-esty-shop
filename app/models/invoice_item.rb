@@ -3,6 +3,8 @@ class InvoiceItem < ApplicationRecord
 
   belongs_to :item
   belongs_to :invoice
+  has_one :merchant, through: :item
+  has_many :bulk_discounts, through: :merchant
 
   enum status: [:pending, :packaged, :shipped]
 
@@ -29,4 +31,32 @@ class InvoiceItem < ApplicationRecord
   def price_dollars(mult = 1)
     '%.2f' % (unit_price * mult / 100.0)
   end
+
+  # def find_discount
+  #   item.merchant.bulk_discounts.where("quantity <= ?", quantity).order("percentage DESC").first
+  # end
+
+  def applicable_discount
+    bulk_discounts.where("? >= quantity", self.quantity)
+                  .order(percentage: :desc, quantity: :desc)
+                  .pluck(:percentage, :id)
+                  .first
+  end
+
+  def revenue
+    if applicable_discount.blank?
+      (unit_price * quantity) / 100.0
+    else
+      revenue = (unit_price * quantity) / 100.0
+      revenue - (revenue * (applicable_discount.first) / 100.0)
+    end
+  end
+
+  # def discounted_rev
+  #   if find_discount.blank?
+  #     (unit_price * quantity) / 100.0
+  #   else
+  #     ((1 - (find_discount.percentage / 100.00)) * (unit_price * quantity) / 100.0)
+  #   end
+  # end
 end
