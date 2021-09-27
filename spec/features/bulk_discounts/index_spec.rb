@@ -106,33 +106,23 @@ RSpec.describe "Bulk Discount Index Page" do
       expect(page).to have_content("Error: Please fill in all the fields")
     end
   end
+
+  describe "delete a discount" do
+    it "allows the merchant to delete their discounts" do
+      visit merchant_bulk_discounts_path(@merchant1)
+
+      expect(page).to have_button("Delete")
+    end
+
+    it "redirects the merchant back to bulk discounts index page" do
+      visit merchant_bulk_discounts_path(@merchant1)
+
+      within("#discount-#{@discount1.id}") do
+        click_on "Delete"
+      end
+      expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
+      expect(page).to have_content("Discount has been deleted")
+      expect(page).to have_no_content(@discount1)
+    end
+  end
 end
-# Merchant Bulk Discount Create
-#
-# As a merchant
-# When I visit my bulk discounts index
-# Then I see a link to create a new discount
-# When I click this link
-# Then I am taken to a new page where I see a form to add a new bulk discount
-# When I fill in the form with valid data
-# Then I am redirected back to the bulk discount index
-# And I see my new bulk discount listed
-
-
-# As a merchant
-# When I visit the discounts index page
-# I see a section with a header of "Upcoming Holidays"
-# In this section the name and date of the next 3 upcoming US holidays are listed.
-#
-# Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
-
-# Merchant Bulk Discounts Index
-#
-# As a merchant
-# When I visit my merchant dashboard
-# Then I see a link to view all my discounts
-# When I click this link
-# Then I am taken to my bulk discounts index page
-# Where I see all of my bulk discounts including their
-# percentage discount and quantity thresholds
-# And each bulk discount listed includes a link to its show page
