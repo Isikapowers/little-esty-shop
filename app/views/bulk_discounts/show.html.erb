@@ -1,5 +1,9 @@
+<%= render partial: "layouts/merchant_header", locals: {merchant: @merchant} %>
+
 <h3><%= @merchant.name %>'s Discount</h3><br>
 
 <h5>Discount Name: <%= @bulk_discount.name %></h5>
 <h5>Percentage: <%= @bulk_discount.percentage %>%</h5>
 <h5>Minimum Quantity: <%= @bulk_discount.quantity %></h5>
+
+<%= link_to "Edit Discount", edit_merchant_bulk_discount_path(@merchant, @bulk_discount) %>
