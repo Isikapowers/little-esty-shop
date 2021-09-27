@@ -43,6 +43,6 @@
     private
 
     def merch_params
-       params.require(:merchant).permit(:name, :status)
+      params.require(:merchant).permit(:name, :status)
     end
   end

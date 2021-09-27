@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Merchant Dashboard" do
+RSpec.describe 'Merchant Dashboard' do
   before :each do
     allow_any_instance_of(GithubService).to receive(:get_data).and_return("haha")
     allow_any_instance_of(GithubService).to receive(:pulls).and_return({one: 1, two: 2 })
@@ -101,4 +101,13 @@ RSpec.describe "Merchant Dashboard" do
     end
   end
 
+  describe 'Bulk Discount' do
+    it 'links to Bulk Discount Index' do
+      visit merchant_dashboard_index_path(@merch.id)
+
+      click_link('My Bulk Discounts')
+
+      expect(current_path).to eq(merchant_bulk_discounts_path(@merch))
+    end
+  end
 end

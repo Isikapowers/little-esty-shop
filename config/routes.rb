@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
 
   resources :merchant, only: [:show] do
+    resources :bulk_discounts
     resources :dashboard, only: [:index]
     resources :items, except: [:destroy]
     resources :item_status, only: [:update]
