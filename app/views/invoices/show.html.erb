@@ -2,12 +2,16 @@
 
 <div id="attributes">
   <h2>Invoice #<%= @invoice.id %></h2>
+  <p>-----------------------------------------------------------------------------</p>
   <span style="font-size: 20px;"><b style="font-size: 22px;">Status: </b> <%= @invoice.status %></span>
   <br>
   <span style="font-size: 20px;"><b style="font-size: 22px;">Created on: </b> <%= @invoice.created_at.strftime("%A, %B %d, %Y") %></span>
-  <br>
+  <p>-----------------------------------------------------------------------------</p>
   <span style="font-size: 20px;"><b style="font-size: 22px;">Total Revenue: </b> $<%= @invoice_items.total_rev %></span>
   <br>
+  <span style="font-size: 20px;"><b style="font-size: 22px;">Total Discounted Revenue: </b> $<%= @invoice.total_discounted_revenue %></span>
+  <br>
+  <p>-----------------------------------------------------------------------------</p><br>
   <span style="font-size: 20px;"><b style="font-size: 22px;">Customer: </b> <%= @invoice.customer_name %></span>
   <br>
   <br>
@@ -21,18 +25,22 @@
         <th scope="col">Quantity</th>
         <th scope="col">Price</th>
         <th scope="col">Status</th>
+        <th scope="col">Discount</th>
       </tr>
     </thead>
     <tbody>
-      <% @invoice_items.each do |inv| %>
-      <tr id="invoice-item<%= inv.id %>">
-        <td><%= inv.get_item.name %></td>
-        <td><%= inv.quantity %></td>
-        <td>$<%= inv.price_dollars(inv.quantity) %></td>
-        <td><%= form_with model: [@merchant, inv], local: true do |f| %>
+      <% @invoice_items.each do |inv_item| %>
+      <tr id="invoice-item<%= inv_item.id %>">
+        <td><%= inv_item.get_item.name %></td>
+        <td><%= inv_item.quantity %></td>
+        <td>$<%= inv_item.price_dollars(inv_item.quantity) %></td>
+        <td><%= form_with model: [@merchant, inv_item], local: true do |f| %>
               <%= f.hidden_field :invoice_id, value: @invoice.id %>
-              <%= f.select :status, [:pending, :packaged, :shipped], selected: inv.status %>
+              <%= f.select :status, [:pending, :packaged, :shipped], selected: inv_item.status %>
               <%= f.submit "Update Status"%>
+            <% end %></td>
+        <td><% if !inv_item.applicable_discount.blank? %>
+            <%= link_to "#{inv_item.applicable_discount.first}%", merchant_bulk_discount_path(@merchant, inv_item.applicable_discount[1]) %>
             <% end %>
         </td>
       </tr>
