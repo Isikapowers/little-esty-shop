@@ -58,5 +58,18 @@ RSpec.describe "Bulk Discounts Show Page" do
 
       expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @discount1))
     end
+
+    it "displays an error message when not all fields have been filled in" do
+      visit edit_merchant_bulk_discount_path(@merchant1, @discount1)
+
+      fill_in "Discount Name", with: ""
+      fill_in "Percentage", with: "30"
+      fill_in "Minimum Quantity", with: "10"
+
+      click_on "Update Discount"
+
+      expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant1, @discount1))
+      expect(page).to have_content("Error: Please fill in all the fields")
+    end
   end
 end
