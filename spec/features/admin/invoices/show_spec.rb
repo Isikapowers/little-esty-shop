@@ -5,6 +5,7 @@ RSpec.describe "Admin Invoices Show Page" do
     allow_any_instance_of(GithubService).to receive(:get_data).and_return("haha")
     allow_any_instance_of(GithubService).to receive(:pulls).and_return({one: 1, two: 2 })
     allow_any_instance_of(GithubService).to receive(:name).and_return({name: "little-esty-shop"})
+
     @joey = Customer.create!(first_name: "Joey", last_name: "Ondricka", created_at: "2012-03-27 14:54:09 UTC", updated_at: "2012-03-27 14:54:09 UTC")
     @cecelia = Customer.create!(first_name: "Cecelia", last_name: "Osinski", created_at: "2012-03-27 14:54:10 UTC", updated_at: "2012-03-27 14:54:10 UTC")
     @mariah = Customer.create!(first_name: "Mariah", last_name: "Toy", created_at: "2012-03-27 14:54:10 UTC", updated_at: "2012-03-27 14:54:10 UTC")
@@ -29,6 +30,9 @@ RSpec.describe "Admin Invoices Show Page" do
     @invoice_item_4 = InvoiceItem.create!(item: @shorts, invoice: @invoice_3  , quantity: 1 , unit_price: 4000, status: "shipped", created_at: "2012-03-27 14:53:59 UTC", updated_at: "2012-03-27 14:53:59 UTC")
     @invoice_item_5 = InvoiceItem.create!(item: @dress, invoice: @invoice_3, quantity: 5, unit_price: 2900, status: "packaged", created_at: "2012-03-27 14:53:59 UTC", updated_at: "2012-03-27 14:53:59 UTC")
     @invoice_item_6 = InvoiceItem.create!(item: @skirt, invoice: @invoice_3, quantity: 3, unit_price: 2500, status: "packaged", created_at: "2012-03-27 14:53:59 UTC", updated_at: "2012-03-27 14:53:59 UTC")
+
+    @discount1 = @zara.bulk_discounts.create!(name: "10% off on 10", percentage: 10, quantity: 10)
+    @discount2 = @forever_21.bulk_discounts.create!(name: "20% off on 20", percentage: 20, quantity: 20)
   end
 
   describe "Invoice Info" do
@@ -131,6 +135,14 @@ RSpec.describe "Admin Invoices Show Page" do
       expect(page).to have_select(selected: "cancelled")
 
       expect(current_path).to eq("/admin/invoices/#{@invoice_1.id}")
+    end
+  end
+
+  describe "Total Revenue and Discount Revenue" do
+    it "displays the total discounted revenue from this invoice" do
+      visit "/admin/invoices/#{@invoice_1.id}"
+
+      expect(page).to have_content(@invoice_1.total_discounted_revenue)
     end
   end
 end
