@@ -1,3 +1,3 @@
-class Merchant < ApplicationController
+class MerchantController < ApplicationController
 
-end  
+end
