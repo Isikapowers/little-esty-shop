@@ -1,7 +1,0 @@
-<%= form_with model: [@merchant, @bulk_discount], local: true do |f| %>
-  <%= f.label :percent_discount %><br/>
-  <%= f.number_field :percent_discount %><br/>
-  <%= f.label :threshold %><br/>
-  <%= f.number_field :threshold %><br/><br/>
-  <%= f.submit 'Create Discount'%>
-<% end %>
