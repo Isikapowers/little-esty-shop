@@ -27,6 +27,10 @@
 
 <h3>Total Revenue: $<%= @invoice.total_revenue %> </h3>
 
+<p>----------------------------------------------------</p>
+
+<h3>Total Discounted Revenue: $<%= @invoice.total_discounted_revenue %> </h3>
+
 <p>----------------------------------------------------</p><br>
 
 <h3>Items on this Invoice</h3>
@@ -52,4 +56,4 @@
     </tr>
   </tbody>
   <% end %>
-</table>
+</table><br>
