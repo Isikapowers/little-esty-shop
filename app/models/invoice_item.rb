@@ -32,10 +32,6 @@ class InvoiceItem < ApplicationRecord
     '%.2f' % (unit_price * mult / 100.0)
   end
 
-  # def find_discount
-  #   item.merchant.bulk_discounts.where("quantity <= ?", quantity).order("percentage DESC").first
-  # end
-
   def applicable_discount
     bulk_discounts.where("? >= quantity", self.quantity)
                   .order(percentage: :desc, quantity: :desc)
@@ -51,12 +47,4 @@ class InvoiceItem < ApplicationRecord
       revenue - (revenue * (applicable_discount.first) / 100.0)
     end
   end
-
-  # def discounted_rev
-  #   if find_discount.blank?
-  #     (unit_price * quantity) / 100.0
-  #   else
-  #     ((1 - (find_discount.percentage / 100.00)) * (unit_price * quantity) / 100.0)
-  #   end
-  # end
 end
