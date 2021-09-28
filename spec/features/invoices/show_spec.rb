@@ -5,16 +5,24 @@ RSpec.describe 'Merchant invoices show page' do
     allow_any_instance_of(GithubService).to receive(:get_data).and_return("haha")
     allow_any_instance_of(GithubService).to receive(:pulls).and_return({one: 1, two: 2 })
     allow_any_instance_of(GithubService).to receive(:name).and_return({name: "little-esty-shop"})
+
     @merch = create(:merchant)
     @merch2 = create(:merchant)
+
     @item1 = create(:item, merchant_id: @merch.id)
     @item2 = create(:item, merchant_id: @merch.id)
     @item3 = create(:item, merchant_id: @merch2.id)
+
     @cust = create(:customer)
+
     @invoice1 = create(:invoice, customer_id: @cust.id)
+
     @inv_item1 = create(:invoice_item, invoice_id: @invoice1.id, item_id: @item1.id)
     @inv_item2 = create(:invoice_item, invoice_id: @invoice1.id, item_id: @item2.id)
     @inv_item3 = create(:invoice_item, invoice_id: @invoice1.id, item_id: @item3.id)
+
+    @discount1 = @merch.bulk_discounts.create!(name: "10% off on 10", percentage: 10, quantity: 10)
+    @discount2 = @merch.bulk_discounts.create!(name: "20% off on 20", percentage: 20, quantity: 20)
   end
 
   it "shows invoice attribues" do
@@ -70,6 +78,24 @@ RSpec.describe 'Merchant invoices show page' do
      within("#invoice-item#{@inv_item1.id}") do
        expect(page).to have_content('packaged')
      end
+   end
 
+   it "displays the total discounted revenue for that specific invoice" do
+     visit merchant_invoice_path(@merch.id, @invoice1.id)
+
+     expect(page).to have_content("Total Discounted Revenue: ")
+     expect(page).to have_content(@invoice1.total_discounted_revenue)
+   end
+
+   it "displays a link to applied discount and redirects the merchant to the bulk discount show page" do
+     @inv_item1.update(quantity: 12)
+
+     visit merchant_invoice_path(@merch.id, @invoice1.id)
+
+     within("#invoice-item#{@inv_item1.id}") do
+       click_on @inv_item1.applicable_discount.first
+
+       expect(current_path).to eq(merchant_bulk_discount_path(@merch, @discount1))
+     end
    end
 end

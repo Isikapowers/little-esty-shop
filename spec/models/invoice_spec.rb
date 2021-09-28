@@ -57,6 +57,7 @@ RSpec.describe Invoice, type: :model do
   describe 'class methods' do
     before :each do
       @merch = create_list(:merchant, 7)
+
       @item1 = create(:item, merchant: @merch[0], status: 'enabled')
       @item2 = create(:item, merchant: @merch[0], status: 'enabled')
       @item3 = create(:item, merchant: @merch[0], status: 'disabled')
@@ -95,11 +96,24 @@ RSpec.describe Invoice, type: :model do
       @transaction6 = create(:transaction, invoice: @invoice5)
       @transaction7 = create(:failed_transaction, invoice: @invoice6)
       @transaction8 = create(:failed_transaction, invoice: @invoice4)
+
+      @discount1 = @merch[0].bulk_discounts.create!(name: "10% off on 10", percentage: 10, quantity: 10)
+      @discount2 = @merch[1].bulk_discounts.create!(name: "20% off on 20", percentage: 20, quantity: 20)
     end
 
     describe '#all_merch_invoices' do
       it "returns all invoices for a merchant" do
         expect(Invoice.all_merch_invoices(@merch[0])).to eq([@invoice, @invoice1, @invoice8])
+      end
+    end
+
+    describe "#total discounted revenue" do
+      it "can get a total discounted revenue" do
+        expect(@invoice.total_discounted_revenue).to eq("30.00")
+        expect(@invoice1.total_discounted_revenue).to eq("20.00")
+        expect(@invoice2.total_discounted_revenue).to eq("10.00")
+        expect(@invoice3.total_discounted_revenue).to eq("40.00")
+        expect(@invoice4.total_discounted_revenue).to eq("30.00")
       end
     end
   end

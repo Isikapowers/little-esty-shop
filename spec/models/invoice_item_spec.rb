@@ -54,11 +54,16 @@ RSpec.describe InvoiceItem do
     @inv_item1 = create(:invoice_item, unit_price: @item1.unit_price, invoice_id: @invoice1.id, item_id: @item1.id)
     @inv_item2 = create(:invoice_item, unit_price: @item2.unit_price, invoice_id: @invoice1.id, item_id: @item2.id)
     @inv_item3 = create(:invoice_item, unit_price: @item2.unit_price, invoice_id: @invoice1.id, item_id: @item3.id)
+
+    @discount1 = @merch.bulk_discounts.create!(name: "10% off on 10", percentage: 10, quantity: 10)
+    # @discount2 = @merch.bulk_discounts.create!(name: "20% off on 20", percentage: 20, quantity: 20)
   end
 
   describe 'relationships' do
     it { should belong_to(:item) }
     it { should belong_to(:invoice) }
+    it { should have_many(:bulk_discounts).through(:merchant) }
+    it { should have_one(:merchant).through(:item) }
   end
 
   describe 'validations' do
@@ -98,7 +103,6 @@ RSpec.describe InvoiceItem do
     end
   end
 
-
   describe 'instance methods' do
     describe '.get_item' do
       it 'returns the item on the invoice' do
@@ -113,6 +117,19 @@ RSpec.describe InvoiceItem do
         @inv_item1.unit_price = 3330
         expect(@inv_item1.price_dollars).to eq('33.30')
         expect(@inv_item1.price_dollars(2)).to eq('66.60')
+      end
+    end
+
+    describe "applicable_discount" do
+      it "can find a discount" do
+        expect(@inv_item1.applicable_discount.first).to eq(10)
+      end
+
+      it "can calculate discount revenue" do
+        @inv_item1.update(quantity: 10)
+        @inv_item1.update(unit_price: 2000)
+
+        expect(@inv_item1.revenue).to eq(180)
       end
     end
   end
