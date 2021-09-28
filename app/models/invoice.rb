@@ -22,6 +22,6 @@ class Invoice < ApplicationRecord
   end
 
   def total_discounted_revenue
-    invoice_items.sum(&:revenue)
+    "%.2f" % (invoice_items.sum(&:revenue))
   end
 end
