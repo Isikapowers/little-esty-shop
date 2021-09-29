@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   end
 
   def welcome
+    @merchants = Merchant.all
   end
 
 end

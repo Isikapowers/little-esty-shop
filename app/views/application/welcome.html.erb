@@ -1,10 +1,25 @@
 <br>
 <h1 class="text-center">Welcome!</h1><br>
 
-<h4>
-<%= link_to "Admin Dashboard", admin_path %>
-</h4>
-
-<h4>
-  <%= link_to "Merchant 1 Dashboard", merchant_dashboard_index_path(1) %>
-</h4>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Admin Dashboard</h5>
+        <p class="card-text">Please click here if you're an admin.</p>
+        <a href="/admin/dashboard" class="btn btn-primary">Admin Dashboard</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Merchant Dashboard</h5>
+        <p class="card-text">Please click on your merchant ID below.</p>
+        <% @merchants.each do |merchant| %>
+        <%= link_to "Merchant #{merchant.id} Dashboard", merchant_dashboard_index_path(merchant.id), class:"btn btn-primary" %><br><br>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
