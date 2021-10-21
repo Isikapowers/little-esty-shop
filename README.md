@@ -1,6 +1,17 @@
 # Little Esty Shop
 
-## Background and Description
+## Table of contents
+* [Description](#description)
+* [Learning Goals](#learning-goals)
+* [Requirements](#requirements)
+* [Database Schema](#database-schema)
+* [Phases](#phases)
+* [Setup](#setup)
+* [Live App](#live-app)
+* [Tools Used](#tools-used)
+* [Contributors](#contributors)
+
+## Description
 
 "Little Esty Shop" is a group project to build a fictitious e-commerce platform where merchants and admins can manage inventory and fulfill customer invoices.
 
