@@ -23,6 +23,7 @@
 - Practice consuming a public API while utilizing POROs as a way to apply OOP principles to organize code.
 
 ## Requirements
+- Ruby 2.7.2
 - Rails 5.2.x
 - PostgreSQL
 - Test all feature and model code
@@ -33,8 +34,6 @@
 ![Schema](https://user-images.githubusercontent.com/72399033/134418403-99e1a24c-11fb-442c-a682-01e86095ba7d.png)
 
 ## Setup
-This project requires Ruby 2.7.2.
-
 * Fork this repository
 * Clone your fork
 * From the command line, install gems and set up your DB:
@@ -42,7 +41,6 @@ This project requires Ruby 2.7.2.
     * `rails db:{create,migrate}`
     * `rails csv_load:all`
 * Run the test suite with `bundle exec rspec`.
-* Run `rails dev:cache` for API caching.
 * Run your development server with `rails s` to see the app in action.
 
 ## Phases
